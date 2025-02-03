@@ -5,11 +5,22 @@ export class Gameboard{
     
     ships;  // An gameboardArray of objects which contain ships, their starting location and it'a axis
     static GAMEBOARD_LENGTH = 9;
-    gameboardArr;  // An 2D array that keeps track of the gameboard. arr[x][y]
+    
+    /**
+     * An 2D array that keeps track of the gameboard. arr[x][y]
+     * -1 means nothing is placed on that cell
+     * 0 means a ship did occupy that space but it was hit there
+     * 1 means a ship is currently occuping that space
+    */
+    gameboardArr;  
 
     constructor(){
         this.#initalizeBoard();
         this.ships = [];
+    }
+
+    receiveAttack(x, y){
+
     }
 
     /**
@@ -82,7 +93,7 @@ export class Gameboard{
         for (let i = 0; i < 10; i++) {
             const row = []; // Create a new row
             for (let j = 0; j < 10; j++) {
-                row.push(0)
+                row.push(-1)
             }
             this.gameboardArr.push(row); // Add the row to the 2D gameboardArray
         }
