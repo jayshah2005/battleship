@@ -1,6 +1,39 @@
 import { Gameboard } from "../../js/objects/gameboard"
 
 
+describe("should report whether or not all of the ships are destoried", () => {
+
+    let gameboard;
+
+    beforeEach(() => {
+        gameboard = new Gameboard();
+
+        gameboard.placeShip([0,1], 2, 'x')
+        gameboard.placeShip([0,3], 5, 'y')
+
+        // Destory ship 1
+        gameboard.receiveAttack(0,1)
+        gameboard.receiveAttack(1,1)
+
+
+        // Destory ship 2 almost
+        gameboard.receiveAttack(0,3)
+        gameboard.receiveAttack(0,4)
+        gameboard.receiveAttack(0,5)
+        gameboard.receiveAttack(0,6)
+    })
+
+    test('should report if all ships are not destroid', () => {
+        expect(gameboard.boardStatus).toBe(false);
+    });
+
+    test('should report if all ships are destroid', () => {
+        gameboard.receiveAttack(0,7)        
+
+        expect(gameboard.boardStatus).toBe(true)
+    });
+})
+
 /**
     * -2 means nothing is placed on that cell and it has been hit
     * -1 means nothing is placed on that cell
@@ -19,6 +52,7 @@ describe('Gameboard Recieve Attack', () => {
 
     describe('Determine whether or not the attack hit a ship', () => {
         test("should determines if the attack hit the ship", () => {
+
             expect(gameboard.receiveAttack(0,3)).toBe(true)
         })
 
@@ -29,10 +63,6 @@ describe('Gameboard Recieve Attack', () => {
 
     test("should record hits for the correct ship", () => {
         gameboard.receiveAttack(0,3)        
-
-        console.log(gameboard.ships);
-
-        console.log(gameboard.gameboardArr);
         
         expect(gameboard.ships[1].ship.numOfHits).toBe(1)
     })

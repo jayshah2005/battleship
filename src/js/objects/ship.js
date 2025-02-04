@@ -7,6 +7,9 @@ export class Ship{
 
     hit() {
         this.numOfHits++;
+
+        if(this.numOfHits == this.length) this.sunk = true;
+
         return this.numOfHits;
     }
 

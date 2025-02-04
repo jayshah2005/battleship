@@ -4,6 +4,7 @@ export class Gameboard{
 
     
     ships;  // An gameboardArray of objects which contain ships, their starting location and it'a axis
+    boardStatus; // Report whether or not all of their ships have been sunk.
     static GAMEBOARD_LENGTH = 9;
     
     /**
@@ -11,38 +12,48 @@ export class Gameboard{
      * -2 means nothing is placed on that cell and it has been hit
      * -1 means nothing is placed on that cell
      * 0 means a ship did occupy that space but it was hit there
-     * 1 means a ship is currently occuping that space
+     * 1-n means a ship is currently occuping that space
     */
     gameboardArr;  
 
     constructor(){
         this.#initalizeBoard();
         this.ships = [];
+        this.boardStatus = false;
     }
 
     receiveAttack(x, y){
 
         let val = this.gameboardArr[x][y]      
 
-        if(this.#validataAttack(x, y)) return "Invalid Attack"
+        if(!this.#validataAttack(x, y)) return "Invalid Attack"
 
         if(val == -1) {
             this.gameboardArr[x][y] = -2
             return false
         } else {
             
-            console.log(this.gameboardArr[x][y]);
-            
-
             this.ships[this.gameboardArr[x][y] - 1].ship.hit()
+
+            this.#updateBoardStatus()
+
             this.gameboardArr[x][y] = 0;
             return true;
         }
 
     }
 
-    #validataAttack(x, y){        
-        return !(this.gameboardArr[x][y] % 2 == 0) && this.gameboardArr[x][y] > 0
+    #updateBoardStatus(){        
+        this.boardStatus = this.ships.reduce((acc, curr) => acc && curr.ship.isSunk(), true)
+    }
+
+    #validataAttack(x, y){   
+        
+        let val = this.gameboardArr[x][y]
+        
+        if(val == -1 || val > 0) return true
+        else return false;
+        
     }
 
     /**
