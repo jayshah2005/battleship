@@ -8,6 +8,7 @@ export class Gameboard{
     
     /**
      * An 2D array that keeps track of the gameboard. arr[x][y]
+     * -2 means nothing is placed on that cell and it has been hit
      * -1 means nothing is placed on that cell
      * 0 means a ship did occupy that space but it was hit there
      * 1 means a ship is currently occuping that space
@@ -21,6 +22,27 @@ export class Gameboard{
 
     receiveAttack(x, y){
 
+        let val = this.gameboardArr[x][y]      
+
+        if(this.#validataAttack(x, y)) return "Invalid Attack"
+
+        if(val == -1) {
+            this.gameboardArr[x][y] = -2
+            return false
+        } else {
+            
+            console.log(this.gameboardArr[x][y]);
+            
+
+            this.ships[this.gameboardArr[x][y] - 1].ship.hit()
+            this.gameboardArr[x][y] = 0;
+            return true;
+        }
+
+    }
+
+    #validataAttack(x, y){        
+        return !(this.gameboardArr[x][y] % 2 == 0) && this.gameboardArr[x][y] > 0
     }
 
     /**
@@ -68,14 +90,13 @@ export class Gameboard{
         quit:
         while (true) {
             
-
-            this.gameboardArr[x][y] = this.ships.length;
-
             if (axis === 'x') {
                 if (x - start[0] === length) break quit;
+                this.gameboardArr[x][y] = this.ships.length;
                 x++;
             } else {
                 if (y - start[1] === length) break quit;
+                this.gameboardArr[x][y] = this.ships.length;
                 y++;
 
             }            
