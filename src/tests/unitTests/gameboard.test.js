@@ -15,7 +15,6 @@ describe("should report whether or not all of the ships are destoried", () => {
         gameboard.receiveAttack(0,1)
         gameboard.receiveAttack(1,1)
 
-
         // Destory ship 2 almost
         gameboard.receiveAttack(0,3)
         gameboard.receiveAttack(0,4)
