@@ -1,3 +1,11 @@
+html{
+    height: 100%;
+}
+
 body{
     background-color: lightgrey;
+    background-image: url('./assets/waterBg.jpg');
+    display: flex;
+    height: 100%;
+    margin: 0px;
 }
