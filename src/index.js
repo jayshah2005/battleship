@@ -14,6 +14,10 @@ function startNewGame(){
     player2 = new Player();
 }
 
+function startGame(player1Value, player2Value){
+    createGameBoard(player1Value, player2Value);
+}
+
 function createStartScreen() {
     // Create the main start screen container
     const startScreen = document.createElement("div");
@@ -98,9 +102,11 @@ function createStartScreen() {
 
     // Event listener to remove start screen and save input values
     startGameButton.addEventListener("click", function() {
-        const player1Value = player1Input.value || "Player 1";
-        const player2Value = player2Input.value || "Player 2";
-        const againstComputer = againstComputerCheckbox.checked;
+        let player1Value = player1Input.value || "Player 1";
+        let player2Value = player2Input.value || "Player 2";
+        let againstComputer = againstComputerCheckbox.checked;
+
+        if(againstComputer) player2Value = "Luffy"
 
         startGame(player1Value, player2Value);
         
@@ -110,10 +116,6 @@ function createStartScreen() {
         
         document.body.removeChild(startScreen);
     });
-}
-
-function startGame(player1Value, player2Value){
-    createGameBoard(player1Value, player2Value);
 }
 
 function createSetUpScreen() {
@@ -166,6 +168,10 @@ function createGameBoard(player1, player2) {
         const playerDiv = document.createElement("div");
         playerDiv.id = playerName;
 
+        const playerNameDiv = document.createElement("div");
+        playerNameDiv.classList.add("playerName");
+        playerNameDiv.textContent = playerName;
+
         const gameBoard = document.createElement("div");
         gameBoard.classList.add("gameboard");
         gameBoard.id = "setupGameGameboard";
@@ -179,6 +185,7 @@ function createGameBoard(player1, player2) {
             }
         }
 
+        playerDiv.appendChild(playerNameDiv)
         playerDiv.appendChild(gameBoard);
         return playerDiv;
     }
