@@ -1,5 +1,6 @@
 import './style.css';
-import './startScreen.css'
+import './startScreen.css';
+import './setup.css'
 import { Player } from "./js/objects/player.js"
 import logoPath from "./assets/battleship_img_logo.png";
 
@@ -107,6 +108,43 @@ function createStartScreen() {
     });
 }
 
+
+function createSetUpScreen() {
+    // Get the container element
+    const body = document.querySelector("body");
+
+    const container = document.createElement("div")
+    container.id = "setup"
+    body.appendChild(container)
+
+    // Create the setup options div
+    const setupOptions = document.createElement("div");
+    setupOptions.id = "setupGameOptions";
+    container.appendChild(setupOptions);
+
+    // Create the game board div
+    const gameBoard = document.createElement("div");
+    gameBoard.classList.add("gameboard");
+    gameBoard.id = "setupGameGameboard";
+    
+    // Generate 81 boxes dynamically
+    for (let i = 0; i < 81; i++) {
+        const box = document.createElement("div");
+        box.classList.add("box");
+        gameBoard.appendChild(box);
+    }
+
+    // Append game board to the container
+    container.appendChild(gameBoard);
+
+    // Create and append the start button
+    const startButton = document.createElement("button");
+    startButton.classList.add("button-5", "setupButton");
+    startButton.textContent = "Start!";
+    container.appendChild(startButton);
+}
+
+
 function resetBoards(){
 
 }
@@ -128,4 +166,4 @@ function displayWinner(){
 }
 
 // Call the function to create and add the start screen to the page
-createStartScreen();
+// createStartScreen();

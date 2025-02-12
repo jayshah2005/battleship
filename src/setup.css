@@ -1,0 +1,21 @@
+#setup{
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#setupGameGameboard{
+
+}
+
+.setupButton{
+    position: absolute;
+    top: 85%;
+    left: 85%;
+
+    font-size: 3rem;
+
+    text-align: center;
+}

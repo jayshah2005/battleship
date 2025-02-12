@@ -9,3 +9,27 @@ body{
     height: 100%;
     margin: 0px;
 }
+
+.gameboard{ 
+    display: grid;
+    grid-template-columns: repeat(9, auto);
+    grid-template-rows: repeat(9, auto);
+    height: 50vh;
+    width: 50vh;
+    
+}
+
+.box {
+    height: auto;
+    width: auto;
+    background-color: hsl(188, 84%, 50%);
+    border: 1px solid black;
+}
+
+#game{
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
