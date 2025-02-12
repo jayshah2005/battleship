@@ -7,6 +7,8 @@ import logoPath from "./assets/battleship_img_logo.png";
 let player1;
 let player2;
 
+createStartScreen()
+
 function startNewGame(){
     player1 = new Player()
     player2 = new Player();
@@ -96,9 +98,11 @@ function createStartScreen() {
 
     // Event listener to remove start screen and save input values
     startGameButton.addEventListener("click", function() {
-        const player1Value = player1Input.value;
-        const player2Value = player2Input.value;
+        const player1Value = player1Input.value || "Player 1";
+        const player2Value = player2Input.value || "Player 2";
         const againstComputer = againstComputerCheckbox.checked;
+
+        startGame(player1Value, player2Value);
         
         console.log("Player 1:", player1Value);
         console.log("Player 2:", player2Value);
@@ -108,6 +112,9 @@ function createStartScreen() {
     });
 }
 
+function startGame(player1Value, player2Value){
+    createGameBoard(player1Value, player2Value);
+}
 
 function createSetUpScreen() {
     // Get the container element
@@ -144,9 +151,41 @@ function createSetUpScreen() {
     container.appendChild(startButton);
 }
 
+// Creates two new game boards based on player names and removes the preivous boards if any
+function createGameBoard(player1, player2) {
 
-function resetBoards(){
+    const existingGame = document.getElementById("game");
+    if (existingGame) {
+        existingGame.remove();
+    }
 
+    const gameContainer = document.createElement("div");
+    gameContainer.id = "game";
+
+    function createPlayerBoard(playerName) {
+        const playerDiv = document.createElement("div");
+        playerDiv.id = playerName;
+
+        const gameBoard = document.createElement("div");
+        gameBoard.classList.add("gameboard");
+        gameBoard.id = "setupGameGameboard";
+
+        for (let x = 0; x < 9; x++) {
+            for (let y = 0; y < 9; y++) {
+                const box = document.createElement("div");
+                box.classList.add("box");
+                box.id = `${playerName}${x}${y}`;
+                gameBoard.appendChild(box);
+            }
+        }
+
+        playerDiv.appendChild(gameBoard);
+        return playerDiv;
+    }
+
+    gameContainer.appendChild(createPlayerBoard(player1));
+    gameContainer.appendChild(createPlayerBoard(player2));
+    document.body.appendChild(gameContainer);
 }
 
 function placeShipOnDOM(gameboard, start, length, axis){
