@@ -3,19 +3,79 @@ import './startScreen.css';
 import './setup.css'
 import { Player } from "./js/objects/player.js"
 import logoPath from "./assets/battleship_img_logo.png";
+import { Gameboard } from './js/objects/gameboard.js';
 
 let player1;
 let player2;
+let movePlayed = false; // Tracks if the current player made a valid move
+let currPlayer; // Tracks the current player
 
-createStartScreen()
+startGame("player 1", "player 2")
 
 function startNewGame(){
     player1 = new Player()
     player2 = new Player();
 }
 
+/**
+ * Initializes a new game by setting up all the variables and the DOM
+ * @param {String} player1Value Name of player 1
+ * @param {String} player2Value Name of Player 2
+ */
 function startGame(player1Value, player2Value){
+
     createGameBoard(player1Value, player2Value);
+
+    const player1 = {
+        name: player1Value,
+        board: new Gameboard(),
+        boardDiv: document.getElementById(player1Value)
+    }
+
+    const player2 = {
+        name: player2Value,
+        board: new Gameboard(),
+        boardDiv: document.getElementById(player2Value)
+    }
+
+    currPlayer = player1;
+
+    initializeBoard(player1)
+    initializeBoard(player2)
+    updateCurrentPlayerText(currPlayer)
+
+    player1.boardDiv.addEventListener("click", () => {
+        if(movePlayed){
+            movePlayed = false
+            currPlayer = player2
+            updateCurrentPlayerText(currPlayer)
+        }
+    })
+
+    player2.boardDiv.addEventListener("click", () => {
+        if(movePlayed){
+            movePlayed = false
+            currPlayer = player1
+            updateCurrentPlayerText(currPlayer)
+        }
+    })
+
+    console.log(player1);
+    console.log(player2);
+}
+
+function updateCurrentPlayerText(currPlayer){
+    if(document.getElementById("currPlayer") != null){
+        let div = document.querySelector("#currPlayer")
+        div.innerHTML = currPlayer.name +"'s turn"
+    } else {
+        let game = document.querySelector("#game")
+        let div = document.createElement("div")
+        div.id = "currPlayer"
+        div.innerHTML = currPlayer.name +"'s turn"
+
+        game.appendChild(div)
+    }
 }
 
 function createStartScreen() {
@@ -181,6 +241,21 @@ function createGameBoard(player1, player2) {
                 const box = document.createElement("div");
                 box.classList.add("box");
                 box.id = `${playerName}${x}${y}`;
+
+                box.addEventListener("click", () => {
+                    if(box.classList != "box clicked") {
+
+                        if(getPlayerNameFromId(box.id) != currPlayer.name) {
+                            alert("You can only play on your own board")
+                            return
+                        } 
+
+                        box.classList = "box clicked";
+                        movePlayed = true
+                    }
+                    else alert("Please select a valid move!")
+                })
+
                 gameBoard.appendChild(box);
             }
         }
@@ -195,11 +270,15 @@ function createGameBoard(player1, player2) {
     document.body.appendChild(gameContainer);
 }
 
+function getPlayerNameFromId(classname){
+    return classname.slice(0, -2)
+}
+
 function placeShipOnDOM(gameboard, start, length, axis){
 
 }
 
-function initializeBoard(gameboard, gameboardDOM){
+function initializeBoard(player){
 
 }
 
@@ -210,6 +289,3 @@ function updateBoard(x, y, newVal, gameboard){
 function displayWinner(){
 
 }
-
-// Call the function to create and add the start screen to the page
-// createStartScreen();

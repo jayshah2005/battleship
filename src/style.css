@@ -39,6 +39,17 @@ body{
     align-items: center;
 }
 
+#currPlayer{
+    display: flex;
+    position: absolute;
+    color: rgb(251, 167, 10);
+    font-family: 'battleship';
+    letter-spacing: 1px;
+    font-size: 1.5rem;
+
+    top: 90%;
+}
+
 .playerName{
     font-family: 'battleship';
     font-size: 3rem;
