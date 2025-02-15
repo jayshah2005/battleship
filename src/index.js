@@ -243,14 +243,23 @@ function createGameBoard(player1, player2) {
                 box.id = `${playerName}${x}${y}`;
 
                 box.addEventListener("click", () => {
-                    if(box.classList != "box clicked") {
 
-                        if(getPlayerNameFromId(box.id) != currPlayer.name) {
-                            alert("You can only play on your own board")
-                            return
-                        } 
+                    if(getPlayerNameFromId(box.id) != currPlayer.name) {
+                        alert("You can only play on your own board")
+                        return
+                    }
 
-                        box.classList = "box clicked";
+                    let {x, y} = getArrayElemFromId(box.id);
+                    let hit = currPlayer.board.receiveAttack(x, y)
+
+                    if(hit != "Invalid Attack") {
+
+                        if(hit) {
+                            
+                        } else{
+                            box.classList = "box clicked";
+                        }
+
                         movePlayed = true
                     }
                     else alert("Please select a valid move!")
@@ -270,8 +279,15 @@ function createGameBoard(player1, player2) {
     document.body.appendChild(gameContainer);
 }
 
-function getPlayerNameFromId(classname){
-    return classname.slice(0, -2)
+function getArrayElemFromId(id){
+    return {
+        x: id.slice(-2, -1),
+        y: id.slice(-1)
+    }
+}
+
+function getPlayerNameFromId(id){
+    return id.slice(0, -2)
 }
 
 function placeShipOnDOM(gameboard, start, length, axis){
