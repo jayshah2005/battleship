@@ -47,7 +47,7 @@ function startGame(player1Value, player2Value){
     player1.boardDiv.addEventListener("click", () => {
         if(movePlayed){
             movePlayed = false
-            currPlayer = player2
+            currPlayer = player1
             updateCurrentPlayerText(currPlayer)
         }
     })
@@ -55,7 +55,7 @@ function startGame(player1Value, player2Value){
     player2.boardDiv.addEventListener("click", () => {
         if(movePlayed){
             movePlayed = false
-            currPlayer = player1
+            currPlayer = player2
             updateCurrentPlayerText(currPlayer)
         }
     })
@@ -244,8 +244,8 @@ function createGameBoard(player1, player2) {
 
                 box.addEventListener("click", () => {
 
-                    if(getPlayerNameFromId(box.id) != currPlayer.name) {
-                        alert("You can only play on your own board")
+                    if(getPlayerNameFromId(box.id) == currPlayer.name) {
+                        alert("You can not attack your own board")
                         return
                     }
 
@@ -304,7 +304,6 @@ function initializeBoard(player){
     let returnVal;
 
     for(let i = 4; i < 8; i++){
-
         while(returnVal != "Ship placed successfully"){
             length = i;
             axis = Math.floor(Math.random() *2) == 0 ? "x" : "y";
@@ -314,10 +313,7 @@ function initializeBoard(player){
         }   
 
         returnVal = "";
-    }
-
-    console.log(player.board.gameboardArr);
-    
+    }    
 }
 
 function updateBoard(x, y, newVal, gameboard){
