@@ -301,15 +301,23 @@ function initializeBoard(player){
     let start;
     let length;
     let axis;
+    let returnVal;
 
-    for(let i = 2; i < 5; i++){
+    for(let i = 4; i < 8; i++){
 
-        length = i;
-        axis = Math.floor(Math.random() *2) == 0 ? "x" : "y";
-        start = [Math.floor(Math.random() * 9), Math.floor(Math.random() * 9)]
+        while(returnVal != "Ship placed successfully"){
+            length = i;
+            axis = Math.floor(Math.random() *2) == 0 ? "x" : "y";
+            start = [Math.floor(Math.random() * 9), Math.floor(Math.random() * 9)]
 
-        player.board.placeShip(start, length, axis);
+            returnVal = player.board.placeShip(start, length, axis);
+        }   
+
+        returnVal = "";
     }
+
+    console.log(player.board.gameboardArr);
+    
 }
 
 function updateBoard(x, y, newVal, gameboard){

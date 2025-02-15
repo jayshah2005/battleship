@@ -73,6 +73,28 @@ export class Gameboard{
         return true
     }
 
+    #collisionChecker(start, length, axis){
+
+        let check = false;
+        let x = start[0], y = start[1]
+
+        quit:
+        while (true) {
+            
+            if (axis === 'x') {
+                if (x - start[0] === length) break quit;
+                check = this.gameboardArr[x][y] > 0 ? true : false;
+                x++;
+            } else {
+                if (y - start[1] === length) break quit;
+                check = this.gameboardArr[x][y] > 0 ? true : false;                
+                y++;
+            }            
+        }
+
+        return check;
+    }
+
     /**
      * The function places a ship of given length between start and end points
      * @param {gameboardArr} start The gameboardArray of x and y coordinates where we start
@@ -87,7 +109,8 @@ export class Gameboard{
         else end = [start[0], start[1] + length]
 
         if(!this.#coordinatesValidator(start, end)) return 'Invalid - Ship Out of Bounds'
-        
+        if(this.#collisionChecker(start, length, axis)) return "Invalid - Ship leads a collision"
+ 
         let ship = new Ship(length);
 
         this.ships.push({
