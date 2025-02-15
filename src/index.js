@@ -279,6 +279,7 @@ function createGameBoard(player1, player2) {
     document.body.appendChild(gameContainer);
 }
 
+// Gets the corresponding coordinates on the gameborad based on the DOM grid box
 function getArrayElemFromId(id){
     return {
         x: id.slice(-2, -1),
@@ -286,6 +287,7 @@ function getArrayElemFromId(id){
     }
 }
 
+// Gets the player name the DOM grid box belongs to
 function getPlayerNameFromId(id){
     return id.slice(0, -2)
 }
@@ -296,6 +298,18 @@ function placeShipOnDOM(gameboard, start, length, axis){
 
 function initializeBoard(player){
 
+    let start;
+    let length;
+    let axis;
+
+    for(let i = 2; i < 5; i++){
+
+        length = i;
+        axis = Math.floor(Math.random() *2) == 0 ? "x" : "y";
+        start = [Math.floor(Math.random() * 9), Math.floor(Math.random() * 9)]
+
+        player.board.placeShip(start, length, axis);
+    }
 }
 
 function updateBoard(x, y, newVal, gameboard){
