@@ -24,9 +24,10 @@ export class Gameboard{
 
     receiveAttack(x, y){
 
-        let val = this.gameboardArr[x][y]      
+        let val = this.gameboardArr[x][y] 
+        let validAttack = this.validataAttack(x, y)     
 
-        if(!this.#validataAttack(x, y)) return "Invalid Attack"
+        if(!validAttack) return "Invalid Attack"
 
         if(val == -1) {
             this.gameboardArr[x][y] = -2
@@ -47,7 +48,7 @@ export class Gameboard{
         this.boardStatus = this.ships.reduce((acc, curr) => acc && curr.ship.isSunk(), true)
     }
 
-    #validataAttack(x, y){   
+    validataAttack(x, y){   
         
         let val = this.gameboardArr[x][y]
         
@@ -147,7 +148,7 @@ export class Gameboard{
 
         for (let i = 0; i < 10; i++) {
             const row = []; // Create a new row
-            for (let j = 0; j < 10; j++) {
+            for (let j = 0; j < 9; j++) {
                 row.push(-1)
             }
             this.gameboardArr.push(row); // Add the row to the 2D gameboardArray

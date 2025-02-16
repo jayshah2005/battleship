@@ -55,3 +55,11 @@ body{
     font-size: 3rem;
     text-align: center;
 }
+
+.clicked{
+    background: transparent;
+}
+
+.hit{
+    background: rgba(255, 0, 0, 0.5);
+}

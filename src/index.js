@@ -9,6 +9,7 @@ let player1;
 let player2;
 let movePlayed = false; // Tracks if the current player made a valid move
 let currPlayer; // Tracks the current player
+let againstComputer = true; // Tracks if the game is against a computer
 
 startGame("player 1", "player 2")
 
@@ -26,13 +27,13 @@ function startGame(player1Value, player2Value){
 
     createGameBoard(player1Value, player2Value);
 
-    const player1 = {
+    player1 = {
         name: player1Value,
         board: new Gameboard(),
         boardDiv: document.getElementById(player1Value)
     }
 
-    const player2 = {
+    player2 = {
         name: player2Value,
         board: new Gameboard(),
         boardDiv: document.getElementById(player2Value)
@@ -57,11 +58,24 @@ function startGame(player1Value, player2Value){
             movePlayed = false
             currPlayer = player2
             updateCurrentPlayerText(currPlayer)
+            if(againstComputer){
+                setTimeout(() => makeMoveAgainst(player1), 100);
+            }
         }
     })
+}
 
-    console.log(player1);
-    console.log(player2);
+function makeMoveAgainst(player){
+    let x = Math.floor(Math.random() * 9);
+    let y = Math.floor(Math.random() * 9);
+
+    while(!player.board.validataAttack(x, y)){
+        x = Math.floor(Math.random() * 9);
+        y = Math.floor(Math.random() * 9);
+    }
+
+    console.log(player);
+    document.getElementById(player.name + x + y).click()
 }
 
 function updateCurrentPlayerText(currPlayer){
@@ -164,7 +178,7 @@ function createStartScreen() {
     startGameButton.addEventListener("click", function() {
         let player1Value = player1Input.value || "Player 1";
         let player2Value = player2Input.value || "Player 2";
-        let againstComputer = againstComputerCheckbox.checked;
+        againstComputer = againstComputerCheckbox.checked;
 
         if(againstComputer) player2Value = "Luffy"
 
@@ -214,7 +228,7 @@ function createSetUpScreen() {
 }
 
 // Creates two new game boards based on player names and removes the preivous boards if any
-function createGameBoard(player1, player2) {
+function createGameBoard(player1Name, player2Name) {
 
     const existingGame = document.getElementById("game");
     if (existingGame) {
@@ -244,25 +258,34 @@ function createGameBoard(player1, player2) {
 
                 box.addEventListener("click", () => {
 
-                    if(getPlayerNameFromId(box.id) == currPlayer.name) {
+                    let playerAttacked = getPlayerNameFromId(box.id)
+
+                    if(playerAttacked == currPlayer) {
                         alert("You can not attack your own board")
                         return
                     }
 
                     let {x, y} = getArrayElemFromId(box.id);
-                    let hit = currPlayer.board.receiveAttack(x, y)
+                    let hit = playerAttacked.board.receiveAttack(x, y)
 
                     if(hit != "Invalid Attack") {
 
                         if(hit) {
-                            
+                            box.classList = "box clicked hit"
+
+                            if(playerAttacked.board.boardStatus) {
+                                console.log("Test");
+                                
+                            }
+
                         } else{
                             box.classList = "box clicked";
                         }
-
                         movePlayed = true
                     }
-                    else alert("Please select a valid move!")
+                    else {
+                        alert("Please select a valid move!")
+                    }
                 })
 
                 gameBoard.appendChild(box);
@@ -274,8 +297,8 @@ function createGameBoard(player1, player2) {
         return playerDiv;
     }
 
-    gameContainer.appendChild(createPlayerBoard(player1));
-    gameContainer.appendChild(createPlayerBoard(player2));
+    gameContainer.appendChild(createPlayerBoard(player1Name));
+    gameContainer.appendChild(createPlayerBoard(player2Name));
     document.body.appendChild(gameContainer);
 }
 
@@ -289,7 +312,7 @@ function getArrayElemFromId(id){
 
 // Gets the player name the DOM grid box belongs to
 function getPlayerNameFromId(id){
-    return id.slice(0, -2)
+    return id.slice(0, -2) == player1.name ? player1 : player2
 }
 
 function placeShipOnDOM(gameboard, start, length, axis){
