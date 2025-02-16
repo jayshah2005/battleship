@@ -56,6 +56,11 @@ body{
     text-align: center;
 }
 
+#randomize{
+    background-color: grey;
+    word-spacing: 1px;
+}
+
 .clicked{
     background: transparent;
 }

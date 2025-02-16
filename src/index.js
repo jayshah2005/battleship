@@ -10,12 +10,24 @@ let player2;
 let movePlayed = false; // Tracks if the current player made a valid move
 let currPlayer; // Tracks the current player
 let againstComputer = true; // Tracks if the game is against a computer
+let player2SetUp = false;
 
-startGame("player 1", "player 2")
+createStartScreen()
 
-function startNewGame(){
-    player1 = new Player()
-    player2 = new Player();
+function setUp(player1Value, player2Value){
+    player1 = {
+        name: player1Value,
+        board: new Gameboard(),
+        boardDiv: document.getElementById(player1Value),
+    }
+
+    player2 = {
+        name: player2Value,
+        board: new Gameboard(),
+        boardDiv: document.getElementById(player2Value),
+    }
+
+    createSetUpScreen(player1)
 }
 
 /**
@@ -23,22 +35,9 @@ function startNewGame(){
  * @param {String} player1Value Name of player 1
  * @param {String} player2Value Name of Player 2
  */
-function startGame(player1Value, player2Value){
-
-    createGameBoard(player1Value, player2Value);
-
-    player1 = {
-        name: player1Value,
-        board: new Gameboard(),
-        boardDiv: document.getElementById(player1Value)
-    }
-
-    player2 = {
-        name: player2Value,
-        board: new Gameboard(),
-        boardDiv: document.getElementById(player2Value)
-    }
-
+function startGame(player1, player2){
+    
+    createGameBoard(player1.name, player2.name);
     currPlayer = player1;
 
     initializeBoard(player1)
@@ -182,7 +181,7 @@ function createStartScreen() {
 
         if(againstComputer) player2Value = "Luffy"
 
-        startGame(player1Value, player2Value);
+        setUp(player1Value, player2Value);
         
         console.log("Player 1:", player1Value);
         console.log("Player 2:", player2Value);
@@ -192,7 +191,7 @@ function createStartScreen() {
     });
 }
 
-function createSetUpScreen() {
+function createSetUpScreen(player) {
     // Get the container element
     const body = document.querySelector("body");
 
@@ -204,6 +203,22 @@ function createSetUpScreen() {
     const setupOptions = document.createElement("div");
     setupOptions.id = "setupGameOptions";
     container.appendChild(setupOptions);
+
+    // Create the player name div
+    const playerNameDiv = document.createElement("div");
+    playerNameDiv.classList.add("playerName");
+    playerNameDiv.textContent = player.name + " Layout";
+
+    // Create the randomize button
+    const randomizeButton = document.createElement("button");
+    randomizeButton.classList.add("button-5");
+    randomizeButton.id = "randomize";
+    randomizeButton.textContent = "Randomize";
+
+    // Append elements to the parent div
+    setupGameOptions.appendChild(playerNameDiv);
+    setupGameOptions.appendChild(randomizeButton);
+
 
     // Create the game board div
     const gameBoard = document.createElement("div");
@@ -223,7 +238,23 @@ function createSetUpScreen() {
     // Create and append the start button
     const startButton = document.createElement("button");
     startButton.classList.add("button-5", "setupButton");
-    startButton.textContent = "Start!";
+    startButton.textContent = "Next!";
+
+    startButton.addEventListener("click", () => {
+
+        document.querySelector("#setup").remove()
+
+        if(!player2SetUp){
+            if(againstComputer) {
+                initializeBoard(player2)
+                startGame(player1, player2);
+            }
+            else createSetUpScreen(player2)
+
+            player2SetUp = true;
+        } else startGame(player1, player2)
+    })
+
     container.appendChild(startButton);
 }
 
