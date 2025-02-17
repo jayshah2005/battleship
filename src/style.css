@@ -58,7 +58,7 @@ body{
 
 #randomize{
     background-color: grey;
-    word-spacing: 1px;
+    letter-spacing: 1px;
 }
 
 .ship{
@@ -72,3 +72,38 @@ body{
 .hit{
     background: rgba(255, 0, 0, 0.5);
 }
+
+#winnerText{
+    display: flex;
+    flex: 1;
+    font-family: 'battleship';
+    letter-spacing: 1px;
+    font-size: 2rem;
+    justify-content: center;
+    align-self: center;
+}
+
+#endScreen{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 50%;
+
+    max-width: fit-content;
+    margin: auto;
+    box-shadow: 10px 10px lightblue;
+    background-color: rgb(251, 167, 10);
+
+    justify-content: center;
+}
+
+#endScreenTitle{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'battleship';
+
+    font-size: 3rem;
+}
+
+

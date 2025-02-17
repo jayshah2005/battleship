@@ -12,7 +12,8 @@ let currPlayer; // Tracks the current player
 let againstComputer = true; // Tracks if the game is against a computer
 let player2SetUp = false;
 
-createStartScreen()
+ createStartScreen()
+
 
 function setUp(player1Value, player2Value){
     player1 = {
@@ -374,10 +375,6 @@ function getPlayerNameFromId(id){
     return id.slice(0, -2) == player1.name ? player1 : player2
 }
 
-function placeShipOnDOM(gameboard, start, length, axis){
-
-}
-
 function initializeBoard(player){
 
     let start;
@@ -400,10 +397,32 @@ function initializeBoard(player){
     }    
 }
 
-function updateBoard(x, y, newVal, gameboard){
+function displayWinner(player){
+    // Create the main end screen container
+    const endScreen = document.createElement("div");
+    endScreen.id = "endScreen";
 
-}
+    // Create the title container
+    const endScreenTitle = document.createElement("div");
+    endScreenTitle.id = "endScreenTitle";
 
-function displayWinner(){
+    // Create the logo image
+    const logoImg = document.createElement("img");
+    logoImg.src = logoPath;
+    logoImg.alt = "";
+    logoImg.id = "battleshipLogoImg";
 
+    // Create the winner text
+    const winnerText = document.createElement("div");
+    winnerText.textContent = `${player.name} Wins!`;
+
+    // Append elements to the title container
+    endScreenTitle.appendChild(logoImg);
+    endScreenTitle.appendChild(winnerText);
+
+    // Append everything to the end screen container
+    endScreen.appendChild(endScreenTitle);
+
+    // Append the end screen to the body
+    document.body.appendChild(endScreen);
 }
