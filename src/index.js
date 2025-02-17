@@ -38,10 +38,11 @@ function setUp(player1Value, player2Value){
 function startGame(player1, player2){
     
     createGameBoard(player1.name, player2.name);
+
+    player1.boardDiv = document.getElementById(player1.name);
+    player2.boardDiv = document.getElementById(player2.name)
     currPlayer = player1;
 
-    initializeBoard(player1)
-    initializeBoard(player2)
     updateCurrentPlayerText(currPlayer)
 
     player1.boardDiv.addEventListener("click", () => {
@@ -64,6 +65,10 @@ function startGame(player1, player2){
     })
 }
 
+/**
+ * Returns a random move that a player can make
+ * @param {player object} player 
+ */
 function makeMoveAgainst(player){
     let x = Math.floor(Math.random() * 9);
     let y = Math.floor(Math.random() * 9);
@@ -73,7 +78,6 @@ function makeMoveAgainst(player){
         y = Math.floor(Math.random() * 9);
     }
 
-    console.log(player);
     document.getElementById(player.name + x + y).click()
 }
 
@@ -183,10 +187,6 @@ function createStartScreen() {
 
         setUp(player1Value, player2Value);
         
-        console.log("Player 1:", player1Value);
-        console.log("Player 2:", player2Value);
-        console.log("Against Computer:", againstComputer);
-        
         document.body.removeChild(startScreen);
     });
 }
@@ -215,6 +215,11 @@ function createSetUpScreen(player) {
     randomizeButton.id = "randomize";
     randomizeButton.textContent = "Randomize";
 
+    randomizeButton.addEventListener("click", () => {
+        initializeBoard(player);
+        updateSetupGameBoard(player)
+    })
+
     // Append elements to the parent div
     setupGameOptions.appendChild(playerNameDiv);
     setupGameOptions.appendChild(randomizeButton);
@@ -226,10 +231,13 @@ function createSetUpScreen(player) {
     gameBoard.id = "setupGameGameboard";
     
     // Generate 81 boxes dynamically
-    for (let i = 0; i < 81; i++) {
-        const box = document.createElement("div");
-        box.classList.add("box");
-        gameBoard.appendChild(box);
+    for (let x = 0; x < 9; x++) {
+        for(let y = 0; y < 9; y ++){
+            const box = document.createElement("div");
+            box.classList.add("box");
+            box.id = `${player.name}${x}${y}`;
+            gameBoard.appendChild(box);
+        }
     }
 
     // Append game board to the container
@@ -240,7 +248,7 @@ function createSetUpScreen(player) {
     startButton.classList.add("button-5", "setupButton");
     startButton.textContent = "Next!";
 
-    startButton.addEventListener("click", () => {
+    startButton.addEventListener("click", () => {        
 
         document.querySelector("#setup").remove()
 
@@ -252,10 +260,30 @@ function createSetUpScreen(player) {
             else createSetUpScreen(player2)
 
             player2SetUp = true;
-        } else startGame(player1, player2)
+        } else {
+            startGame(player1, player2)
+        }
     })
 
     container.appendChild(startButton);
+
+    initializeBoard(player);
+    updateSetupGameBoard(player)
+}
+
+function updateSetupGameBoard(player){
+    const div = document.querySelector("#setupGameboard")
+    let gameboard = player.board.gameboardArr;
+
+    for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+            if(gameboard[i][j] > 0){
+                document.getElementById(player.name + i + j).classList = "box ship"
+            } else{
+                document.getElementById(player.name + i + j).classList = "box"
+            }
+        }
+    }
 }
 
 // Creates two new game boards based on player names and removes the preivous boards if any
@@ -305,8 +333,8 @@ function createGameBoard(player1Name, player2Name) {
                             box.classList = "box clicked hit"
 
                             if(playerAttacked.board.boardStatus) {
-                                console.log("Test");
-                                
+                                document.querySelector("#game").remove();
+                                displayWinner(currPlayer);
                             }
 
                         } else{
@@ -356,6 +384,8 @@ function initializeBoard(player){
     let length;
     let axis;
     let returnVal;
+
+    player.board.initalizeBoard();
 
     for(let i = 4; i < 8; i++){
         while(returnVal != "Ship placed successfully"){

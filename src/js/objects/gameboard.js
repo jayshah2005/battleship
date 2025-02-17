@@ -17,7 +17,7 @@ export class Gameboard{
     gameboardArr;  
 
     constructor(){
-        this.#initalizeBoard();
+        this.initalizeBoard();
         this.ships = [];
         this.boardStatus = false;
     }
@@ -143,10 +143,11 @@ export class Gameboard{
     /**
      * Create a 10x10 gameboardArray which will act as the Gameboard
      */
-    #initalizeBoard(){
+    initalizeBoard(){
         this.gameboardArr = []
+        this.ships = []
 
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 9; i++) {
             const row = []; // Create a new row
             for (let j = 0; j < 9; j++) {
                 row.push(-1)

@@ -61,6 +61,10 @@ body{
     word-spacing: 1px;
 }
 
+.ship{
+    background-color: grey;
+}
+
 .clicked{
     background: transparent;
 }
